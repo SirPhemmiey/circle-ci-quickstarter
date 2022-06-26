@@ -39,7 +39,7 @@ jobs:
       - checkout
       - attach_workspace: 
           at: /tmp/workspace
-      - run: cat ./output.txt
+      - run: cat /tmp/workspace/output.txt
   
   # print-hello:
   #   docker:
