@@ -22,12 +22,13 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps: 
+      - checkout
       - run:
           command: |
             echo "text to output" > output.txt
-            mkdir /tmp/workspace
+            
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: ~/
           paths: 
             - output.txt
   
@@ -35,9 +36,10 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps: 
+      - checkout
       - attach_workspace: 
-          at: /tmp/workspace
-      - run: cat /tmp/workspace/output.txt
+          at: ~/
+      - run: cat ~/output.txt
   
   # print-hello:
   #   docker:
