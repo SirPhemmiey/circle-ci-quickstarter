@@ -31,7 +31,9 @@ jobs:
     steps: 
       - checkout
       - run:
-          command: "echo World!"
+          command: |
+            echo "World!"
+            echo $NAME
 
 
 # Invoke jobs via workflows
