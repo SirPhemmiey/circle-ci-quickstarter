@@ -28,7 +28,7 @@ jobs:
             mkdir -p /tmp/workspace
             echo "text to output" > output.txt
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: .
           paths: 
               - output.txt
   
@@ -39,7 +39,7 @@ jobs:
       - checkout
       - attach_workspace: 
           at: /tmp/workspace
-      - run: cat /tmp/workspace/output.txt
+      - run: cat output.txt
   
   # print-hello:
   #   docker:
