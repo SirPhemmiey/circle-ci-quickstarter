@@ -24,14 +24,14 @@ jobs:
     steps: 
       - checkout
       - run:
-        command: "echo Hello!"
+          command: "echo Hello!"
   print-world:
     docker:
       - image: circleci/node:13.8.0
     steps: 
       - checkout
       - run:
-        command: "echo World!"
+          command: "echo World!"
 
 
 # Invoke jobs via workflows
