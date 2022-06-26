@@ -18,17 +18,15 @@ jobs:
     steps:
       - print-pipeline-id
   
-  on-fail-job:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - run: exit 1
-      - run:
-          name: on error
-          command: echo "Hello Error!"
-          when: on_fail
-
-
+  # on-fail-job:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - run: exit 1
+  #     - run:
+  #         name: on error
+  #         command: echo "Hello Error!"
+  #         when: on_fail
 
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -90,7 +88,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - my-job
-      - on-fail-job
+      #- on-fail-job
       - save_hello_world_output
       - print_output_file:
           requires:
