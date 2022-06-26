@@ -25,12 +25,12 @@ jobs:
       - checkout
       - run:
           command: |
+            mkdir -p /tmp/workspace
             echo "text to output" > output.txt
-            
       - persist_to_workspace:
-          root: ~/
+          root: /tmp/workspace
           paths: 
-            - output.txt
+              - output.txt
   
   print_output_file:
     docker:
@@ -38,8 +38,8 @@ jobs:
     steps: 
       - checkout
       - attach_workspace: 
-          at: ~/
-      - run: cat ~/output.txt
+          at: /tmp/workspace
+      - run: cat /tmp/workspace/output.txt
   
   # print-hello:
   #   docker:
