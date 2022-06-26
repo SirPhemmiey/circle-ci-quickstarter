@@ -18,22 +18,42 @@ jobs:
           name: "Say hello"
           command: "echo Hello, World!"
   
-  print-hello:
+  save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
     steps: 
-      - checkout
-      - run:
-          command: "echo Hello!"
-  print-world:
-    docker:
-      - image: circleci/node:13.8.0
-    steps: 
-      - checkout
       - run:
           command: |
-            echo "World!"
-            echo $NAME
+            echo "text to output" > output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths: 
+            - output.txt
+  
+  print_output_file:
+    docker:
+      - image: circleci/node:13.8.0
+    steps: 
+      - attach_workspace: 
+        at: ~/
+      - run: cat ~/output.txt
+  
+  # print-hello:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps: 
+  #     - checkout
+  #     - run:
+  #         command: "echo Hello!"
+  # print-world:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps: 
+  #     - checkout
+  #     - run:
+  #         command: |
+  #           echo "World!"
+  #           echo $NAME
 
 
 # Invoke jobs via workflows
@@ -41,8 +61,7 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
-      - print-hello
-      - print-world:
+      - save_hello_world_output
+      - print_output_file:
           requires:
-            - print-hello
+            - save_hello_world_output
