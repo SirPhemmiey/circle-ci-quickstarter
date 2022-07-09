@@ -3,6 +3,13 @@ version: 2.1
 orbs:
 # Define the jobs we want to run for this project
 jobs:
+  destroy_environment: 
+      steps:
+        - run: 
+            when: on_fail
+            command: |
+              aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7} 
+
   create_infrastructure:
       docker: 
         - image: amazon/aws-cli
@@ -13,7 +20,7 @@ jobs:
             command: |
               aws cloudformation deploy \
                 --template-file template.yml \
-                --stack-name MyStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --stack-name MyStack-${CIRCLE_WORKFLOW_ID:0:7} \
                 --region us-east-1 
   
   configure_infrastructure:
@@ -51,6 +58,15 @@ jobs:
               else
                 return 1
               fi
+  
+  smoke_test_failure: 
+    docker:
+    - image: alpine:latest
+    steps:
+      - run:
+          name: Smoke Test Fail
+          command: return 1
+      - destroy_environment
 
 # Sequential workflow
 workflows:
@@ -59,4 +75,5 @@ workflows:
     jobs:
       #- create_infrastructure
       #- configure_infrastructure
-      - smoke_test
+      #- smoke_test
+      - smoke_test_failure
