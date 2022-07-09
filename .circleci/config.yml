@@ -8,7 +8,6 @@ jobs:
         - image: amazon/aws-cli 
       steps:
         - run: 
-            when: on_fail
             command: |
               aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:7} 
 
@@ -68,7 +67,8 @@ jobs:
       - run:
           name: Smoke Test Fail
           command: return 1
-      - destroy_environment
+      - destroy_environment:
+          when: on_fail
 
 # Sequential workflow
 workflows:
